@@ -22,6 +22,10 @@ class Player(object):
         self.squid_swim.set_colorkey(WHITE)
         self.ground = "neutral"
         self.moved = False
+        self.swimSound = pygame.mixer.Sound(os.path.join('audio', 'swim_sound.wav'))
+        self.swimChannel = pygame.mixer.find_channel()
+        self.swimChannel.play(self.swimSound, -1)
+        self.swimChannel.pause()
 
     def pos(self):
         return int(self.x), int(self.y)
@@ -38,7 +42,7 @@ class Player(object):
             for y in range(ground.get_height()):
                 c = ground.get_at((x,y)).normalize()
                 if c in count: count[c] += 1
-        threshold = self.side * math.pi * 0.7
+        threshold = (self.side/2)**2 * math.pi * 0.7
         if count[p] > threshold: return "friendly"
         elif count[e] > threshold: return "hostile"
         else: return "neutral"
@@ -90,8 +94,11 @@ class Player(object):
             if self.ground == "friendly":
                 if self.moved:
                     screen.blit(pygame.transform.rotate(self.squid_swim, ROTATE_MAP.get(self.dir)), self.pos())
+                    self.swimChannel.unpause()
+                    return
             else:
                 screen.blit(pygame.transform.rotate(self.squid, ROTATE_MAP.get(self.dir)), self.pos())
+        self.swimChannel.pause()
 
     @staticmethod
     def fromControllerList(game, controllers):

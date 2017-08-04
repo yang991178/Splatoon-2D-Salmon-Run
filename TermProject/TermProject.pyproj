@@ -48,12 +48,27 @@
     <Content Include="assets\controller.png" />
     <Content Include="assets\font.ttf" />
     <Content Include="assets\logo.png" />
+    <Content Include="audio\charge_charging.wav" />
+    <Content Include="audio\charge_shot.wav" />
+    <Content Include="audio\charge_shot_soft.wav" />
+    <Content Include="audio\charge_start.wav" />
+    <Content Include="audio\emerge_sound.wav" />
+    <Content Include="audio\no_ink_sound.wav" />
+    <Content Include="audio\roller_sound.wav" />
+    <Content Include="audio\roller_sound2.wav" />
+    <Content Include="audio\roller_splat.wav" />
+    <Content Include="audio\shot_long.wav" />
+    <Content Include="audio\shot_short.wav" />
+    <Content Include="audio\submerge_sound.wav" />
+    <Content Include="audio\swim_sound.wav" />
+    <Content Include="audio\swim_sound2.wav" />
     <Content Include="scene.py">
       <SubType>Code</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="assets\" />
+    <Folder Include="audio\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

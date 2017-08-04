@@ -10,13 +10,18 @@ class Menu(scene.Scene):
         self.captionRect = self.caption.get_rect()
         self.captionRect.center = (data.width / 2, data.height * 2 / 3)
         self.controller = input.Input()
+        self.exitCount = 0
 
     def fireTimer(self, data):
         action = self.controller.getAction()
         if "A" in action:
             data.scene = preparation.Preparation(data)
         elif "B" in action:
-            pass
+            self.exitCount += 1
+            if self.exitCount >= 30:
+                data.active = False
+        else:
+            self.exitCount = 0
 
     def updateDisplay(self, screen, data):
         screen.fill((0,0,0))

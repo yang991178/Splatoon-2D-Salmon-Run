@@ -11,6 +11,8 @@ class Game(scene.Scene):
         self.playerColor = pygame.color.Color(255,127,39)
         self.enemyColor = pygame.color.Color(16,124,93)
         self.players = Player.fromControllerList(self, controllers)
+        self.submergeSound = pygame.mixer.Sound(os.path.join('audio', 'submerge_sound.wav'))
+        self.emergeSound = pygame.mixer.Sound(os.path.join('audio', 'emerge_sound.wav'))
 
         #self.map.fill(self.playerColor)
 
@@ -20,8 +22,12 @@ class Game(scene.Scene):
             if "pause" in actions:
                 data.scene = pause.Pause(data, self)
             elif "squid" in actions:
+                if player.state == "kid":
+                    self.submergeSound.play()
                 player.state = "squid"
             else:
+                if player.state == "squid":
+                    self.emergeSound.play()
                 player.state = "kid"
             player.move(self)
 
