@@ -1,5 +1,6 @@
 import pygame, scene, os, input, pause
 from player import Player
+from barrier import Barrier
 
 class Game(scene.Scene):
     def __init__(self, data, controllers):
@@ -13,10 +14,28 @@ class Game(scene.Scene):
         self.players = Player.fromControllerList(self, controllers)
         self.submergeSound = pygame.mixer.Sound(os.path.join('audio', 'submerge_sound.wav'))
         self.emergeSound = pygame.mixer.Sound(os.path.join('audio', 'emerge_sound.wav'))
+        self.blots = []
+        self.barriers = [Barrier((160, 160), (1,0), (0,1), (1,0), 280),
+                         Barrier((360, 110), (1,0), (0,1), (-1,9), 130),
+                         Barrier((160, 160), (0,1), (-1,0), (0,1), 120),
+                         Barrier((160, 270), (1,0), (0,-1), (1,0), 100),
+                         Barrier((480, 110), (0,1), (1,0), (0,1), 120),
+                         Barrier((480, 230), (0,1), (1,0), (0,-1), 140),
+                         Barrier((160, 320), (1,0), (0,-1), (-1,0), 170),
+                         Barrier((330, 320), (1,0), (0,-1), (1,0), 100),
+                         Barrier((420, 320), (0,1), (-1,0), (0,-1), 50)]
 
-        #self.map.fill(self.playerColor)
+    def hit(self, x, y, dir):
+        for barrier in self.barriers:
+            if barrier.rect.collidepoint(x, y):
+                if not ((barrier.passage[0] == dir[0] and dir[0] != 0) or (barrier.passage[1] == dir[1] and dir[1] != 0)):
+                    return True
+        return False
 
     def fireTimer(self, data):
+        for blot in self.blots:
+            if blot.move(self) == "exploded":
+                self.blots.remove(blot)
         for player in self.players:
             actions = player.controller.getAction()
             if "pause" in actions:
@@ -25,6 +44,8 @@ class Game(scene.Scene):
                 if player.state == "kid":
                     self.submergeSound.play()
                 player.state = "squid"
+            elif "shoot" in actions and player.state != "squid":
+                self.blots += player.weapon.fire(player.center(), player.dir)
             else:
                 if player.state == "squid":
                     self.emergeSound.play()
@@ -34,5 +55,11 @@ class Game(scene.Scene):
     def updateDisplay(self, screen, data):
         screen.blit(self.map, self.mapRect)
         screen.blit(self.obstacles, self.mapRect)
+        for barrier in self.barriers:
+            barrier.draw(screen)
         for player in self.players:
             player.draw(screen)
+        for player in self.players:
+            player.drawOverlay(screen)
+        for blot in self.blots:
+            blot.draw(screen)

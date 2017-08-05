@@ -30,7 +30,7 @@ def run():
     height=480
     pygame.init()
     pygame.mixer.init()
-    trueScreen = pygame.display.set_mode((1280,960))
+    trueScreen = pygame.display.set_mode((960,720))
     #trueScreen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
     screen = pygame.Surface((width, height))
     scale = trueScreen.get_height()/screen.get_height()
