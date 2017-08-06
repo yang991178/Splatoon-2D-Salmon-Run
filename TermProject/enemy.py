@@ -74,7 +74,7 @@ class Enemy(object):
 
 class Chum(Enemy):
     def __init__(self, pos, color):
-        super().__init__(pos, 22, 60, "chum", 0.75, color)
+        super().__init__(pos, 22, 90, "chum", 0.75, color)
 
 class SmallFly(Enemy):
     def __init__(self, pos, color):
@@ -83,7 +83,7 @@ class SmallFly(Enemy):
 class Cohock(Enemy):
     cost = 3
     def __init__(self, pos, color):
-        super().__init__(pos, 14, 120, "cohock", 0.4, color)
+        super().__init__(pos, 14, 150, "cohock", 0.4, color)
 
     def rect(self):
         return pygame.Rect(self.pos(), (22, 27))

@@ -48,6 +48,10 @@ class Game(scene.Scene):
                 if player.state == "lifesaver" and player.rect().collidepoint(x, y):
                     player.state = "kid"
                     return True
+            for barrier in self.barriers:
+                if barrier.rect.collidepoint(x, y):
+                    if not ((barrier.passage[0] == dir[0] and dir[0] != 0) or (barrier.passage[1] == dir[1] and dir[1] != 0)):
+                        return True
         else:
             for player in self.players:
                 if player.rect().collidepoint(x, y):
@@ -55,10 +59,6 @@ class Game(scene.Scene):
                     player.recoverCount = 90
                     if player.hp <= 0:
                         player.state = "lifesaver"
-                    return True
-        for barrier in self.barriers:
-            if barrier.rect.collidepoint(x, y):
-                if not ((barrier.passage[0] == dir[0] and dir[0] != 0) or (barrier.passage[1] == dir[1] and dir[1] != 0)):
                     return True
         return False
 
@@ -68,6 +68,8 @@ class Game(scene.Scene):
         return not self.isOnHouse(pos)
 
     def fireTimer(self, data):
+        if self.players[0].state == self.players[1].state == "lifesaver":
+            data.scene = pause.GaveOver(data, self)
         for blot in self.blots:
             if blot.move(self) == "exploded":
                 self.blots.remove(blot)
