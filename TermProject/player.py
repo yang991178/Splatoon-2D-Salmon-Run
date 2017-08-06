@@ -1,6 +1,7 @@
 import pygame, os, input, weapon, random, math
 
 WHITE = pygame.color.Color(255,255,255)
+BLACK = pygame.color.Color(0,0,0)
 ROTATE_MAP = {(0,1):90,(-1,1):135,(-1,0):180,(-1,-1):225,(0,-1):270,(1,-1):315,(1,0):0,(1,1):45}
 
 class Player(object):
@@ -12,6 +13,8 @@ class Player(object):
         self.dir = (0,-1)
         self.weapon = weapon
         self.state = "kid"
+        self.hp = 100
+        self.recoverCount = 0
         self.kid = pygame.image.load(os.path.join('assets', 'kid.bmp'))
         self.kid.set_colorkey(WHITE)
         self.kid_back = pygame.image.load(os.path.join('assets', 'kid_back.bmp'))
@@ -20,6 +23,8 @@ class Player(object):
         self.squid.set_colorkey(WHITE)
         self.squid_swim = pygame.image.load(os.path.join('assets', 'squid_swim.bmp'))
         self.squid_swim.set_colorkey(WHITE)
+        self.lifesaver = pygame.image.load(os.path.join('assets', 'lifesaver.bmp'))
+        self.lifesaver.set_colorkey(BLACK)
         self.ground = "neutral"
         self.moved = False
         self.swimSound = pygame.mixer.Sound(os.path.join('audio', 'swim_sound.wav'))
@@ -55,6 +60,7 @@ class Player(object):
         else: return "neutral"
 
     def speed(self, game):
+        if self.state == "lifesaver": return 1.5
         self.ground = ground = self.checkGround(game)
         if ground == "hostile":
             return 0.5
@@ -103,9 +109,13 @@ class Player(object):
             self.moved = True
         if self.state == "squid" and self.ground == "friendly":
             self.weapon.ink = min(100, self.weapon.ink + 1)
+        self.recoverCount = max(0, self.recoverCount - 1)
+        if self.recoverCount == 0: self.hp = 100
 
     def draw(self, screen):
-        if self.state == "kid":
+        if self.state == "lifesaver":
+            screen.blit(self.lifesaver, self.pos())
+        elif self.state == "kid":
             kid = self.kid if self.dir[1] != 1 else self.kid_back
             if self.dir[0] == -1: kid = pygame.transform.flip(kid, True, False)
             x, y = self.pos()

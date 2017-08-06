@@ -15,7 +15,7 @@ class Blot(object):
         self.x += self.dir[0] * self.s
         self.y -= self.dir[1] * self.s
         self.t -= (self.dir[0]**2 + self.dir[1]**2)**0.5 * self.s
-        if self.t <= 0 or game.hit(self.x, self.y, self.dir):
+        if self.t <= 0 or game.hit(self.x, self.y, self.dir, self.d, self.c):
             return self.explode(game)
 
     def explode(self, game, r=(0,0,0,0)):
@@ -54,7 +54,7 @@ class Weapon(object):
 
 class SplatShot(Weapon):
     def __init__(self, color):
-        super().__init__(color, 90, 18, 35, 6, 4)
+        super().__init__(color, 90, 18, 35, 6, 2)
         self.sound = pygame.mixer.Sound(os.path.join('audio', 'shot_short.wav'))
         self.aim = pygame.image.load(os.path.join('assets', 'shot_aim.bmp'))
         self.aim.set_colorkey((255, 255, 255))
@@ -63,17 +63,39 @@ class SplatShot(Weapon):
         if self.cooldown == 0:
             if self.ink == 0:
                 self.drain.play()
-                self.cooldown = 30
+                self.cooldown = 25
                 return []
             else:
-                self.cooldown = 10
+                self.cooldown = 4
                 self.ink = max(0, self.ink - self.cost)
                 self.sound.play()
                 return [Blot(pos, dir, self.br, self.r, self.d, self.c, self.s),
                        Blot(pos, dir, self.br, random.randint(1,self.r), 0, self.c, self.s)]
         else: return []
 
-class InkBrush(Weapon):
-    pass
+class TriSlosher(Weapon):
+    def __init__(self, color):
+        super().__init__(color, 35, 22, 65, 8, 15)
+        self.sound = pygame.mixer.Sound(os.path.join('audio', 'roller_splat.wav'))
+        self.aim = pygame.image.load(os.path.join('assets', 'shot_aim.bmp'))
+        self.aim.set_colorkey((255, 255, 255))
 
-WEAPONS = [SplatShot, SplatShot]
+    dirList = [(0,1),(1,1),(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1)]
+
+    def fire(self, pos, dir):
+        if self.cooldown == 0:
+            if self.ink == 0:
+                self.drain.play()
+                self.cooldown = 25
+                return []
+            else:
+                self.cooldown = 15
+                self.ink = max(0, self.ink - self.cost)
+                self.sound.play()
+                return [Blot(pos, dir, self.br, self.r, self.d, self.c, self.s),
+                        Blot(pos, self.dirList[self.dirList.index(dir)-1], self.br, self.r, self.d, self.c, self.s),
+                        Blot(pos, self.dirList[(self.dirList.index(dir)+1)%len(self.dirList)], self.br, self.r, self.d, self.c, self.s),
+                       Blot(pos, dir, self.br, random.randint(1,self.r), 0, self.c, self.s)]
+        else: return []
+
+WEAPONS = [SplatShot, TriSlosher]

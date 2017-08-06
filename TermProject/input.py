@@ -4,7 +4,7 @@ pg = pygame
 
 WASD = {pg.K_w:(0,-1),pg.K_a:(-1,0),pg.K_s:(0,1),pg.K_d:(1,0)}
 ARROWS = {pg.K_UP:(0,-1),pg.K_LEFT:(-1,0),pg.K_DOWN:(0,1),pg.K_RIGHT:(1,0)}
-GENERAL_MAP = {"move":{**WASD,**ARROWS},"action":{pg.K_RETURN:"A",pg.K_ESCAPE:"B"}}
+GENERAL_MAP = {"move":{**WASD,**ARROWS},"action":{pg.K_RETURN:"A",pg.K_ESCAPE:"B",pg.K_h:"help"}}
 JOYSTICK_ACTIONS = {0:"sub", 4: "squid", 5: "shoot", 8: "pause", 9: "pause", 10: "special"}
 KEYBOARD_P1 = {"move":WASD, "action":{pg.K_SPACE: "shoot", pg.K_LALT: "squid", pg.K_LCTRL: "special", pg.K_LSHIFT: "sub", pg.K_ESCAPE:"pause"}}
 KEYBOARD_P2 = {"move":ARROWS, "action":{pg.K_SLASH: "shoot", pg.K_PERIOD: "squid", pg.K_RETURN: "special", pg.K_RSHIFT: "sub", pg.K_ESCAPE:"pause"}}
