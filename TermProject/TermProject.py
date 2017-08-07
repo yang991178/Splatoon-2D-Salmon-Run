@@ -1,7 +1,8 @@
 import pygame, menu, os
 
-import ctypes
-ctypes.windll.user32.SetProcessDPIAware()
+if os.name == "nt":
+    import ctypes
+    ctypes.windll.user32.SetProcessDPIAware()
 
 class GameData(object):
     def __init__(self, width, height):
@@ -25,6 +26,7 @@ def fireTimer(data):
 def updateDisplay(screen, data):
     data.scene.updateDisplay(screen, data)
 
+# no need to cite, wrote this on my own
 def run():
     width=640
     height=480

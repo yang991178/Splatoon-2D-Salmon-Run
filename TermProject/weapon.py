@@ -75,7 +75,7 @@ class SplatShot(Weapon):
 
 class TriSlosher(Weapon):
     def __init__(self, color):
-        super().__init__(color, 35, 22, 65, 8, 15)
+        super().__init__(color, 35, 22, 65, 8, 10)
         self.sound = pygame.mixer.Sound(os.path.join('audio', 'roller_splat.wav'))
         self.aim = pygame.image.load(os.path.join('assets', 'shot_aim.bmp'))
         self.aim.set_colorkey((255, 255, 255))

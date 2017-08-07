@@ -17,6 +17,7 @@ class Game(scene.Scene):
         self.players = Player.fromControllerList(self, controllers)
         self.submergeSound = pygame.mixer.Sound(os.path.join('audio', 'submerge_sound.wav'))
         self.emergeSound = pygame.mixer.Sound(os.path.join('audio', 'emerge_sound.wav'))
+        self.hitSound = pygame.mixer.Sound(os.path.join('audio', 'hit_enemy.wav'))
         self.blots = []
         self.house = pygame.Rect((170,170),(310,150))
         self.barriers = [Barrier((170, 160), (1,0), (0,1), (1,0), 280),
@@ -40,6 +41,7 @@ class Game(scene.Scene):
         if color == self.playerColor:
             for enemy in self.enemies:
                 if enemy.rect().collidepoint(x, y):
+                    self.hitSound.play()
                     enemy.hp -= damage
                     if enemy.hp <= 0:
                         self.enemies.remove(enemy)
