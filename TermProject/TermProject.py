@@ -1,5 +1,6 @@
 import pygame, menu, os
 
+# modified from https://stackoverflow.com/questions/27421391/pygame-display-info-giving-wrong-resolution-size
 if os.name == "nt":
     import ctypes
     ctypes.windll.user32.SetProcessDPIAware()
@@ -9,9 +10,9 @@ class GameData(object):
         self.active = True
         self.width = width
         self.height = height
+        self.score = 0
         self.font = pygame.font.Font(os.path.join('assets', 'font.ttf'),20)
-        self.scene = menu.Menu(self)
-        
+        self.scene = menu.Menu(self)      
 
 def processEvent(data):
     for event in pygame.event.get():
@@ -32,8 +33,8 @@ def run():
     height=480
     pygame.init()
     pygame.mixer.init()
-    #trueScreen = pygame.display.set_mode((960,720))
-    trueScreen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+    trueScreen = pygame.display.set_mode((960,720))
+    #trueScreen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
     screen = pygame.Surface((width, height))
     scale = trueScreen.get_height()/screen.get_height()
     scaleRect = pygame.transform.scale(screen, (int(width*scale), int(height*scale))).get_rect()
