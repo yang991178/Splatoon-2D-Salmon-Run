@@ -1,4 +1,4 @@
-# Splatoon 2D: Salmon-Run
+# Splatoon 2D: Salmon Run
 Pygame-based 2D adaptation of Splatoon 2's co-op mode featuring jon-con support, 3 maps, 6 types of enemies (including 3 bosses), and 2 weapons.
 ## How to play
 1. Install python3 and pygame (Enter "python3 -m pip install pygame" in console. See https://www.pygame.org/wiki/GettingStarted).
